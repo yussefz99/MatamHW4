@@ -2,11 +2,15 @@
 #pragma once
 
 #include <string>
-
+#include <utility>
+#include <memory>
+#include "Job.h"
+#include "Character.h"
 using std::string;
 
 class Player {
 public:
+    Player(std::string& name, std::shared_ptr<Job> job,std::shared_ptr<Character> behavior);
     /**
      * Gets the description of the player
      *
@@ -48,4 +52,14 @@ public:
      * @return - coins of the player
     */
     int getCoins() const;
+
+private:
+    std::string m_name;
+    int m_level;
+    int m_force;
+    int m_currHP;
+    int m_MaxHP;
+    int m_coins;
+    std::shared_ptr<Job> m_job;
+    std::shared_ptr<Character> m_character;
 };
