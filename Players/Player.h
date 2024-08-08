@@ -53,6 +53,16 @@ public:
     */
     int getCoins() const;
 
+    int get_Maxhp() const;
+    string get_job() const;
+    string get_charecter()const;
+    void set_HP(int hp);
+    void set_force(int Newforce);
+    void set_coins(int newCoins);
+    void add_level();
+    void add_coins(int coins);
+    void add_force(int toAdd);
+    int CombatPower()const;
 private:
     std::string m_name;
     int m_level;
