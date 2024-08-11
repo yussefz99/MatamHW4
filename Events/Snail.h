@@ -12,7 +12,7 @@ public:
     static const int Snail_LOOT=2;
     static  const int Snail_DAMAGE=10;
     Snail();
-    void make_move(Player &player) override;
+    int make_move(Player &player) override;
     int Get_CombatPower() override;
     int Get_Loot() override;
     int Get_Damage() override;

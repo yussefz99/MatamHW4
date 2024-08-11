@@ -9,7 +9,7 @@ class SolarEclips : public SpecialEvent{
     SolarEclips()=default;
     ~SolarEclips()override=default;
     string getDescription() const override;
-    void make_move(Player &player) override;
+    int make_move(Player &player) override;
     int Get_OutCome() const override;
 };
 

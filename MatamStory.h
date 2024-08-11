@@ -2,15 +2,26 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+#include <memory>
+#include <vector>
+#include <queue>
+#include <set>
+#include <fstream>
+#include <algorithm>
 
 #include "Players/Player.h"
 #include "Events/Event.h"
+using std::shared_ptr;
+using std::vector;
+using std::queue;
 
 
 class MatamStory{
 private:
     unsigned int m_turnIndex;
-
+    std::queue<shared_ptr<Event>>* Events_queue;
+    shared_ptr<vector<shared_ptr<Player>>> Players_Vec;
     /**
      * Playes a single turn for a player
      *
@@ -45,7 +56,7 @@ public:
      *
     */
     MatamStory(std::istream& eventsStream, std::istream& playersStream);
-
+    ~MatamStory();
     /**
      * Plays the entire game
      *

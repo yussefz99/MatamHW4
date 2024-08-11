@@ -63,6 +63,9 @@ public:
     void add_coins(int coins);
     void add_force(int toAdd);
     int CombatPower()const;
+
+    bool operator<(const Player& other)const;///operator < for sorted vector
+
 private:
     std::string m_name;
     int m_level;

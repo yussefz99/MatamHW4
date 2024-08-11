@@ -11,7 +11,7 @@
 class Encounter : public Event{
 public:
     Encounter(const int CombatPower,const int Loot,const int Damage);
-    virtual void make_move(Player &player)=0;
+    virtual int make_move(Player &player)=0;
     virtual int Get_OutCome()const=0;
     virtual int Get_CombatPower()=0;
     virtual int Get_Loot()=0;

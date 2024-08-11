@@ -8,7 +8,7 @@
 class SpecialEvent : public Event{
 public:
     SpecialEvent()=default;
-    virtual void make_move(Player &player)=0;
+    virtual int make_move(Player &player)=0;
     virtual int Get_OutCome() const =0;
     virtual string getDescription() const=0;
     virtual ~SpecialEvent()=default; //override?

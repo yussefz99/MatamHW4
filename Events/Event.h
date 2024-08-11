@@ -7,7 +7,7 @@ class Event {  //intilaze outcome
 public:
     Event()=default;
     virtual int Get_OutCome();
-    virtual void make_move(Player &player)=0;
+    virtual int make_move(Player &player)=0;
     /**
      * Gets the description of the event
      *

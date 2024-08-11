@@ -9,7 +9,7 @@ class PotionsMerchant : public SpecialEvent{
     PotionsMerchant()=default;
     ~PotionsMerchant()override=default;
     string getDescription() const override;
-    void make_move(Player &player) override;
+    int make_move(Player &player) override;
     int Get_OutCome() const override;
 };
 

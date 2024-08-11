@@ -19,7 +19,7 @@ Encounter(0,0,0),pack_num(num){
         Damage = Pack_Damage;
 }
 
-void Pack::make_move(Player &player) {
+int Pack::make_move(Player &player) {
     if(player.CombatPower() > CombatPower){
         player.add_level();
         player.add_coins(Loot);
@@ -28,10 +28,12 @@ void Pack::make_move(Player &player) {
             player.set_HP(hp-10);
         }
         outcome=0;
+        return Loot;
     } else{
         int hp = player.getHealthPoints();
         player.set_HP(hp-Damage);
         outcome=1;
+        return Damage;
     }
 }
 

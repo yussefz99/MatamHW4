@@ -10,7 +10,7 @@ private:
     int pack_num;
 public:
     Pack(std::vector<std::shared_ptr<Encounter>> Pack_Members,int num);
-    void make_move(Player &player) override;
+    int make_move(Player &player) override;
     int Get_CombatPower() override;
     int Get_Loot() override;
     int Get_Damage() override;

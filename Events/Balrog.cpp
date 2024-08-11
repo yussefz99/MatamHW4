@@ -6,7 +6,7 @@
 
 Balrog::Balrog(): Encounter(Barlog_COMPATPOWER,Barlog_LOOT,Barlog_DAMAGE) {}
 
-void Balrog::make_move(Player &player) {
+int Balrog::make_move(Player &player) {
     if(player.CombatPower() > CombatPower){
         player.add_level();
         player.add_coins(Barlog_LOOT);
@@ -15,12 +15,15 @@ void Balrog::make_move(Player &player) {
             player.set_HP(hp-10);
         }
         outcome=0;
+        CombatPower+=2;
+        return Barlog_LOOT;
     } else{
         int hp = player.getHealthPoints();
         player.set_HP(hp-Barlog_DAMAGE);
         outcome=1;
+        CombatPower+=2;
+        return Barlog_DAMAGE;
     }
-    CombatPower+=2;
 }
 
 int Balrog::Get_CombatPower() {

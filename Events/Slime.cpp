@@ -7,7 +7,7 @@
 Slime::Slime(): Encounter(Slime_COMPATPOWER,Slime_LOOT,Slime_DAMAGE){}
 
 
-void Slime::make_move(Player &player) {
+int Slime::make_move(Player &player) {
     if(player.CombatPower() > Slime_COMPATPOWER){
         player.add_level();
         player.add_coins(Slime_LOOT);
@@ -16,10 +16,12 @@ void Slime::make_move(Player &player) {
             player.set_HP(hp-10);
         }
         outcome=0;
+        return Slime_LOOT;
     } else{
         int hp = player.getHealthPoints();
         player.set_HP(hp-Slime_DAMAGE);
         outcome=1;
+        return Slime_DAMAGE;
     }
 }
 

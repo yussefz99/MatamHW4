@@ -11,7 +11,7 @@ public:
     static const int Slime_LOOT=5;
     static  const int Slime_DAMAGE=25;
     Slime();
-    void make_move(Player &player) override;
+    int make_move(Player &player) override;
     int Get_CombatPower() override;
     int Get_Loot() override;
     int Get_Damage() override;

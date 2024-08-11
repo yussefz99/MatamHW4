@@ -11,7 +11,7 @@ public:
     static const int Barlog_LOOT=100;
     static  const int Barlog_DAMAGE=9001;
     Balrog();
-    void make_move(Player &player) override;
+    int make_move(Player &player) override;
     int Get_CombatPower() override;
     int Get_Loot() override;
     int Get_Damage() override;
