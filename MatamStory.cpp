@@ -341,7 +341,8 @@ void MatamStory::playRound() {
     printLeaderBoardMessage();
     /*===== TODO: Print leaderboard entry for each player using "printLeaderBoardEntry" =====*/
     std::vector<shared_ptr<Player>> Leader_Board=MakeBoard(*Players_Vec);
-    for(int i=0 ; i<Players_Vec->size();i++){
+    int len =Players_Vec->size();
+    for(int i=0 ; i<len;i++){
         printLeaderBoardEntry(i+1,*(Leader_Board[i]));
     }
     /*=======================================================================================*/
@@ -359,7 +360,8 @@ bool MatamStory::isGameOver() const {
 void MatamStory::play() {
     printStartMessage();
     /*===== TODO: Print start message entry for each player using "printStartPlayerEntry" =====*/
-    for(int i=0;i<Players_Vec->size();i++) {
+    int len =Players_Vec->size();
+    for(int i=0;i<len;i++) {
         printStartPlayerEntry(i+1, *((*Players_Vec)[i]));
     }
     /*=========================================================================================*/
