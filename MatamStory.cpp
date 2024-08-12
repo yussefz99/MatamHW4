@@ -144,24 +144,23 @@ std::map<std::string,shared_ptr<Job>> GetJobMap(){
 
 
 bool isNumber(string str){
-    int length=str.size();
-    for(int i=0;i<length;i++){
-        if( str[i]< 48 || str[i]>57){
-            return false;
-        }
+    int i=0;
+    while (str[i]){
+        if( str[i]< 48 || str[i]>57)return false;
+        i++;
     }
     return true;
 }
 
 bool isWord(string str){
-    int length=str.size();
-    for(int i=0;i<length;i++){
-        if(!(str[i]>= 65 && str[i]<= 90) && !(str[i]>= 97 && str[i]<= 122)){
-            return false;
-        }
+    int i=0;
+    while (str[i]){
+        if(!(str[i]>= 65 && str[i]<= 90) && !(str[i]>= 97 && str[i]<= 122))return false;
+        i++;
     }
     return true;
 }
+
 
 void MakePack( std::istringstream lineStream,shared_ptr<vector<shared_ptr<Encounter>>>Members){
     std::string packWord;
@@ -197,8 +196,35 @@ void MakeEventsQueue(string line,std::queue<shared_ptr<Event>> *Cards){
 
 }
 
-void MakePlayersVec( shared_ptr<vector<shared_ptr<Player>>> Players,string line){
-
+void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstream& line){
+    string word , name, job,charcter;
+    std::map<std::string, shared_ptr<Character>> behaviorMap = GetCharcterMap();
+    std::map<std::string, shared_ptr<Job>> jobMap = GetJobMap();
+    int count=0;
+    while (line >> word){
+        if(count == 0)name=word;
+        if(count==1)job=word;
+        if(count==2)charcter=word;
+        count++;
+    }
+    if(!isWord(word)){
+        throw PlayersExeption();
+    }
+    if(name.size() > 15 || name.size() < 3){
+        throw PlayersExeption();
+    }
+    auto it_jop = jobMap.find(job);
+    if (it_jop == jobMap.end()) {
+        throw PlayersExeption();
+    }
+    auto it_charcter = behaviorMap.find(charcter);
+    if (it_charcter == behaviorMap.end()) {
+        throw PlayersExeption();
+    }
+    shared_ptr<Job> myJob = jobMap[job];
+    shared_ptr<Character> myBehavior = behaviorMap[charcter];
+    shared_ptr<Player> player1 = std::make_shared<Player>(name, myJob, myBehavior);
+    Players->push_back(player1);
 }
 
 ///-----------------------------------MATAMSTORY----------------------------------------------------//
@@ -235,10 +261,29 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
 
 
     /*===== TODO: Open and Read players file =====*/
-
+    shared_ptr<vector<shared_ptr<Player>>> Players(new vector<shared_ptr<Player>>) ;
+    if(!playersStream){
+        delete Events;
+        throw PlayersExeption();
+    }
+    while (std::getline(playersStream,line)){
+        std::istringstream lineStream(line); // Create a string stream for each line
+        try{
+            AddPlayers(Players,lineStream);
+        }catch (PlayersExeption& e){
+            delete Events;
+            throw;
+        }
+    }
+    if(Players->size()<2 || Players->size() > 6){
+        delete Events;
+        throw PlayersExeption();
+    }
+    
     /*============================================*/
 
-
+    this->Events_queue=Events;
+    this->Players_Vec=Players;
     this->m_turnIndex = 1;
 }
 
