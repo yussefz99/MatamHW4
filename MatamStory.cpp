@@ -64,8 +64,8 @@ void sortPlayers(vector<shared_ptr<Player>>& players) {
 }
 
 
-std::vector<shared_ptr<Player>> Make_Leader(vector<shared_ptr<Player>> Players){
-   unsigned int PlayersLength=Players.size();  // unsigend????
+std::vector<shared_ptr<Player>> MakeBoard(vector<shared_ptr<Player>> Players){
+//   unsigned int PlayersLength=Players.size();  // unsigend????
     vector<shared_ptr<Player>> Leader = Players;
 //    for(int i=10;i>-1;i--){
 //        for(int j=0;j<PlayersLength;j++){
@@ -80,7 +80,7 @@ std::vector<shared_ptr<Player>> Make_Leader(vector<shared_ptr<Player>> Players){
 
 //-----------------------------CHECK IF GAMEOVER------------------------------------------------------
 
-bool Player_Wins(const shared_ptr<vector<shared_ptr<Player>>>& Players) ///const& ??????
+bool IsWinner(const shared_ptr<vector<shared_ptr<Player>>>& Players) ///const& ??????
 {
 //    int length=Players->size();
 //    for(int i=0;i<length;i++){
@@ -94,7 +94,7 @@ bool Player_Wins(const shared_ptr<vector<shared_ptr<Player>>>& Players) ///const
     return false;
 }
 
-bool Players_Knocked_out(const shared_ptr<vector<shared_ptr<Player>>>& Players){
+bool AllOUT(const shared_ptr<vector<shared_ptr<Player>>>& Players){
     int num=0;
     int length=Players->size();
     for(int i=0;i<length;i++){
@@ -106,7 +106,7 @@ bool Players_Knocked_out(const shared_ptr<vector<shared_ptr<Player>>>& Players){
     return length==num;
 }
 
-//----------------------------------------set up-------------------------------------------------
+//----------------------------------------setUp the constactor-------------------------------------------------
 
 
 std::map<string,shared_ptr<Event>> GetEventMap(){
@@ -192,13 +192,13 @@ void MakePack( std::istringstream lineStream,shared_ptr<vector<shared_ptr<Encoun
     }
 }
 
-void MakeEventsQueue(string line,std::queue<shared_ptr<Event>> *Cards){
+void AddEvent(string line,std::queue<shared_ptr<Event>> *Cards){
 
 }
 
 void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstream& line){
     string word , name, job,charcter;
-    std::map<std::string, shared_ptr<Character>> behaviorMap = GetCharcterMap();
+    std::map<std::string, shared_ptr<Character>> CharcterMap = GetCharcterMap();
     std::map<std::string, shared_ptr<Job>> jobMap = GetJobMap();
     int count=0;
     while (line >> word){
@@ -217,12 +217,12 @@ void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstre
     if (it_jop == jobMap.end()) {
         throw PlayersExeption();
     }
-    auto it_charcter = behaviorMap.find(charcter);
-    if (it_charcter == behaviorMap.end()) {
+    auto it_charcter = CharcterMap.find(charcter);
+    if (it_charcter == CharcterMap.end()) {
         throw PlayersExeption();
     }
     shared_ptr<Job> myJob = jobMap[job];
-    shared_ptr<Character> myBehavior = behaviorMap[charcter];
+    shared_ptr<Character> myBehavior = CharcterMap[charcter];
     shared_ptr<Player> player1 = std::make_shared<Player>(name, myJob, myBehavior);
     Players->push_back(player1);
 }
@@ -279,7 +279,7 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
         delete Events;
         throw PlayersExeption();
     }
-    
+
     /*============================================*/
 
     this->Events_queue=Events;
@@ -288,15 +288,13 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
 }
 
 void MatamStory::playTurn(Player& player) {
-
-    /**
-     * Steps to implement (there may be more, depending on your design):
-     * 1. Get the next event from the events list
-     * 2. Print the turn details with "printTurnDetails"
-     * 3. Play the event
-     * 4. Print the turn outcome with "printTurnOutcome"
-    */
-
+    Event* curr_Event = Events_queue->front().get();
+    printTurnDetails(m_turnIndex,player,*curr_Event);
+    int res=curr_Event->make_move(player);
+    Events_queue->push(Events_queue->front());
+    Events_queue->pop();
+    int outcome=curr_Event->Get_OutCome();
+    print_Outcome(player,res,outcome);
     m_turnIndex++;
 }
 
@@ -305,15 +303,21 @@ void MatamStory::playRound() {
     printRoundStart();
 
     /*===== TODO: Play a turn for each player =====*/
-
+    for(auto& player : *Players_Vec){
+        if(player->getHealthPoints() != 0){
+            playTurn(*player);
+        }
+    }
     /*=============================================*/
 
     printRoundEnd();
 
     printLeaderBoardMessage();
-
     /*===== TODO: Print leaderboard entry for each player using "printLeaderBoardEntry" =====*/
-
+    std::vector<shared_ptr<Player>> Leader_Board=MakeBoard(*Players_Vec);
+    for(int i=0 ; i<Players_Vec->size();i++){
+        printLeaderBoardEntry(i+1,*(Leader_Board[i]));
+    }
     /*=======================================================================================*/
 
     printBarrier();
@@ -321,6 +325,7 @@ void MatamStory::playRound() {
 
 bool MatamStory::isGameOver() const {
     /*===== TODO: Implement the game over condition =====*/
+    if(IsWinner(Players_Vec) || AllOUT(Players_Vec))return true;
     return false; // Replace this line
     /*===================================================*/
 }
