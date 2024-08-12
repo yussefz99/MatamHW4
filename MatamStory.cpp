@@ -162,39 +162,63 @@ bool isWord(string str){
 }
 
 
-void MakePack( std::istringstream lineStream,shared_ptr<vector<shared_ptr<Encounter>>>Members){
+void MakePack(const vector<string>& words,shared_ptr<vector<shared_ptr<Encounter>>>Members) {
     std::string packWord;
-    int count=0;
-    std::map<string, shared_ptr<Encounter>> EncounterMap=GetEncounterMap();
+    std::map<string, shared_ptr<Encounter>> EncounterMap = GetEncounterMap();
     shared_ptr<vector<shared_ptr<Encounter>>> PackMembers(new vector<shared_ptr<Encounter>>);
-    while (lineStream >> packWord){
-        if(count == 1){
-            if(!isNumber(packWord)){
+    int size = 0;
+    size = std::stoi(words[1]);
+    if (size < 2) {
+        throw EventExeption();
+    }
+    for (size_t i = 0; i < words.size();) {
+        if (words[i] == "Pack") {
+            if (i + 1 >= words.size() || !isNumber(words[i + 1])) {
                 throw EventExeption();
             }
-            int number = std::stoi(packWord);
-            if(number < 2){
-                throw EventExeption();
+            i += 2;
+            std::vector<std::shared_ptr<Encounter>> temp_Members;
+            int count = 0;
+            while (words[i] != "Pack" && i < words.size()) {
+                std::shared_ptr<Encounter> monster = EncounterMap[words[i]];
+                temp_Members.push_back(monster);
+                i++;
+                count++;
             }
+            std::shared_ptr<Pack> newMember(new Pack(temp_Members, count)); ///????
+            Members->push_back(newMember);
+        }else{
+            std::shared_ptr<Encounter> monster = EncounterMap[words[i]];
+            Members->push_back(monster);
+            i++;
         }
-        if(count > 1){
-            if(isWord(packWord)){
-                throw EventExeption();
-            }
-            auto it = EncounterMap.find(packWord);
-            if(it != EncounterMap.end()){
-                PackMembers->push_back(EncounterMap[packWord]);
-            } else{
-                throw EventExeption();
-            }
-        }
-        count++;
     }
 }
+//
+//while (lineStream >> packWord){
+//if(count == 1){
+//if(!isNumber(packWord)){
+//throw EventExeption();
+//}
+//int number = std::stoi(packWord);
+//if(number < 2){
+//throw EventExeption();
+//}
+//}
+//if(count > 1){
+//if(isWord(packWord)){
+//throw EventExeption();
+//}
+//auto it = EncounterMap.find(packWord);
+//if(it != EncounterMap.end()){
+//PackMembers->push_back(EncounterMap[packWord]);
+//} else{
+//throw EventExeption();
+//}
+//}
+//count++;
+//}
 
-void AddEvent(string line,std::queue<shared_ptr<Event>> *Cards){
-
-}
 
 void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstream& line){
     string word , name, job,charcter;
@@ -207,7 +231,7 @@ void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstre
         if(count==2)charcter=word;
         count++;
     }
-    if(!isWord(word)){
+    if(!isWord(name)){
         throw PlayersExeption();
     }
     if(name.size() > 15 || name.size() < 3){
@@ -237,24 +261,26 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
         throw EventExeption();
     }
     auto *Events=new queue<shared_ptr<Event>>;
-    while (std::getline(eventsStream,line)){
+    std::map<string, shared_ptr<Event>> EventMap = GetEventMap();
+    while (std::getline(eventsStream,line)) {
         std::istringstream lineStream(line); // Create a string stream for each line
         std::string word;
-        std::map<string, shared_ptr<Event>> EventMap = GetEventMap();
+        vector<string> words;
         while (lineStream >> word) {  // Read each word in the line
-            if(word != "Pack"){
-                if(!isWord(word)){
-                    throw EventExeption();
-                }
-                auto it = EventMap.find(word);
-                if(it != EventMap.end()){
-                    Events->push(EventMap[word]);
-                } else{
-                    throw EventExeption();
-                }
-            } else{
-
+            words.push_back(word);
+        }
+        if(words[0] == "Pack"){
+            shared_ptr<vector<shared_ptr<Encounter>>> PackMembers(new vector<shared_ptr<Encounter>>);
+            MakePack(words,PackMembers);
+            shared_ptr<Pack> myPack=std::make_shared<Pack>(*PackMembers,std::stoi(words[1]));
+            Events->back()=myPack;//Gang constructor
+            PackMembers->clear(); // ?????
+        } else{
+            auto it = EventMap.find(words[0]);
+            if(it == EventMap.end()){
+                throw EventExeption();
             }
+            shared_ptr<Event> event = EventMap[words[0]];
         }
     }
     /*==========================================*/
@@ -333,7 +359,9 @@ bool MatamStory::isGameOver() const {
 void MatamStory::play() {
     printStartMessage();
     /*===== TODO: Print start message entry for each player using "printStartPlayerEntry" =====*/
-
+    for(int i=0;i<Players_Vec->size();i++) {
+        printStartPlayerEntry(i+1, *((*Players_Vec)[i]));
+    }
     /*=========================================================================================*/
     printBarrier();
 
@@ -343,7 +371,12 @@ void MatamStory::play() {
 
     printGameOver();
     /*===== TODO: Print either a "winner" message or "no winner" message =====*/
-
+    printGameOver();
+    if (AllOUT(Players_Vec))printNoWinners();
+    if (IsWinner(Players_Vec)){
+        std::vector<shared_ptr<Player>> Leader_Board = MakeBoard(*Players_Vec);
+        printWinner(*(Leader_Board[0]));
+    }
     /*========================================================================*/
 }
 
