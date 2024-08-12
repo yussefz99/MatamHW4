@@ -6,6 +6,7 @@
 #define MATAMHW4_SOLARECLIPS_H
 
 class SolarEclips : public SpecialEvent{
+public:
     SolarEclips()=default;
     ~SolarEclips()override=default;
     string getDescription() const override;

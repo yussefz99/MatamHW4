@@ -6,6 +6,7 @@
 #define MATAMHW4_RESPONSIBLE_H
 
 class Responsible : public Character{
+public:
     Responsible()=default;
     std::string get_Character() override;
     ~Responsible()override=default;

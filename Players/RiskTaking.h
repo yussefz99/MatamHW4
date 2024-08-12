@@ -7,6 +7,7 @@
 #define MATAMHW4_RISKTAKING_H
 
 class RiskTaking:public Character{
+public:
     RiskTaking()=default;
     std::string get_Character() override;
     ~RiskTaking()override=default;

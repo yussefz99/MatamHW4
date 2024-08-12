@@ -6,6 +6,7 @@
 #define MATAMHW4_POTIONSMERCHANT_H
 
 class PotionsMerchant : public SpecialEvent{
+public:
     PotionsMerchant()=default;
     ~PotionsMerchant()override=default;
     string getDescription() const override;

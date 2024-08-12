@@ -66,18 +66,16 @@ void Player::set_coins(int newCoins) {
 }
 
 int Player::CombatPower() const {
-    if(m_job->get_job()=="Warrior"){
-        return (m_force*2)+m_level;
-    } else{
-        return m_force+m_level;
-    }
+    return m_job->combat_power(m_force,m_level);
 }
 
 void Player::add_coins(int coins) {
     m_coins+=coins;
 }
 void Player::add_level() {
-    m_level++;
+    if(this->m_level < 10){
+        m_level++;
+    }
 }
 
 void Player::add_force(int toAdd) {

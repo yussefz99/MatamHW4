@@ -1,7 +1,24 @@
 
 #include "MatamStory.h"
-
 #include "Utilities.h"
+
+
+class EventExeption :public exception{
+public:
+    const char* what()const noexcept override{
+        return "Invalid Events File";
+    }
+};
+
+class PlayersExeption :public exception{
+public:
+    const char* what()const noexcept override{
+        return "Invalid Players File";
+    }
+};
+
+
+
 
 
 void print_Outcome(Player& player,int result,int outcome){
@@ -22,9 +39,6 @@ void print_Outcome(Player& player,int result,int outcome){
         printTurnOutcome(outcome_massege);
     }
 }
-
-//----------------------------------------------------------------------
-
 
 
 //-------------------------------SORT THE LEADBORAD------------------------------------
@@ -52,14 +66,14 @@ void sortPlayers(vector<shared_ptr<Player>>& players) {
 
 std::vector<shared_ptr<Player>> Make_Leader(vector<shared_ptr<Player>> Players){
    unsigned int PlayersLength=Players.size();  // unsigend????
-    vector<shared_ptr<Player>> Leader;
-    for(int i=10;i>-1;i--){
-        for(int j=0;j<PlayersLength;j++){
-            if(Players[j]->getLevel()==i){
-                Leader.push_back(Players[j]);
-            }
-        }
-    }
+    vector<shared_ptr<Player>> Leader = Players;
+//    for(int i=10;i>-1;i--){
+//        for(int j=0;j<PlayersLength;j++){
+//            if(Players[j]->getLevel()==i){
+//                Leader.push_back(Players[j]);
+//            }
+//        }
+//    }
     sortPlayers(Leader);
     return Leader;
 }
@@ -68,11 +82,14 @@ std::vector<shared_ptr<Player>> Make_Leader(vector<shared_ptr<Player>> Players){
 
 bool Player_Wins(const shared_ptr<vector<shared_ptr<Player>>>& Players) ///const& ??????
 {
-    int length=Players->size();
-    for(int i=0;i<length;i++){
-        if((*Players)[i]->getLevel()==10){
-            return true;
-        }
+//    int length=Players->size();
+//    for(int i=0;i<length;i++){
+//        if((*Players)[i]->getLevel()==10){
+//            return true;
+//        }
+//    }
+    for(auto& player : *Players){
+        if(player->getLevel()==10)return true;
     }
     return false;
 }
@@ -89,12 +106,131 @@ bool Players_Knocked_out(const shared_ptr<vector<shared_ptr<Player>>>& Players){
     return length==num;
 }
 
+//----------------------------------------set up-------------------------------------------------
+
+
+std::map<string,shared_ptr<Event>> GetEventMap(){
+    typename std::map<std::string,shared_ptr<Event>> Eventmap;
+    Eventmap["Snail"] = std::make_shared<Snail>();
+    Eventmap["Slime"] =  std::make_shared<Slime>();
+    Eventmap["Balrog"] =  std::make_shared<Balrog>();
+    Eventmap["Pack"] = nullptr;
+    Eventmap["SolarEclipse"] =  std::make_shared<SolarEclips>();
+    Eventmap["PotionsMerchant"] =std::make_shared<PotionsMerchant>();
+    return Eventmap;
+}
+std::map<string,shared_ptr<Encounter>> GetEncounterMap(){
+    typename std::map<std::string,shared_ptr<Encounter>> Encountermap;
+    Encountermap["Snail"] = std::make_shared<Snail>();
+    Encountermap["Slime"] =  std::make_shared<Slime>();
+    Encountermap["Balrog"] =  std::make_shared<Balrog>();
+    Encountermap["Pack"] = nullptr;
+    return Encountermap;
+}
+
+std::map<std::string,shared_ptr<Character>> GetCharcterMap(){
+    typename std::map<std::string,shared_ptr<Character>> myMap;
+    myMap["RiskTaking"] = std::make_shared<RiskTaking>();
+    myMap["Responsible"] = std::make_shared<Responsible>();
+    return myMap;
+}
+std::map<std::string,shared_ptr<Job>> GetJobMap(){
+    typename std::map<std::string,shared_ptr<Job>> myMap;
+    myMap["Warrior"] =std::make_shared<Warrior>();
+    myMap["Sorcerer"] =std::make_shared<Archer>();
+    myMap["Magician"] =std::make_shared<Magician>();
+    return myMap;
+}
+
+
+bool isNumber(string str){
+    int length=str.size();
+    for(int i=0;i<length;i++){
+        if( str[i]< 48 || str[i]>57){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool isWord(string str){
+    int length=str.size();
+    for(int i=0;i<length;i++){
+        if(!(str[i]>= 65 && str[i]<= 90) && !(str[i]>= 97 && str[i]<= 122)){
+            return false;
+        }
+    }
+    return true;
+}
+
+void MakePack( std::istringstream lineStream,shared_ptr<vector<shared_ptr<Encounter>>>Members){
+    std::string packWord;
+    int count=0;
+    std::map<string, shared_ptr<Encounter>> EncounterMap=GetEncounterMap();
+    shared_ptr<vector<shared_ptr<Encounter>>> PackMembers(new vector<shared_ptr<Encounter>>);
+    while (lineStream >> packWord){
+        if(count == 1){
+            if(!isNumber(packWord)){
+                throw EventExeption();
+            }
+            int number = std::stoi(packWord);
+            if(number < 2){
+                throw EventExeption();
+            }
+        }
+        if(count > 1){
+            if(isWord(packWord)){
+                throw EventExeption();
+            }
+            auto it = EncounterMap.find(packWord);
+            if(it != EncounterMap.end()){
+                PackMembers->push_back(EncounterMap[packWord]);
+            } else{
+                throw EventExeption();
+            }
+        }
+        count++;
+    }
+}
+
+void MakeEventsQueue(string line,std::queue<shared_ptr<Event>> *Cards){
+
+}
+
+void MakePlayersVec( shared_ptr<vector<shared_ptr<Player>>> Players,string line){
+
+}
+
 ///-----------------------------------MATAMSTORY----------------------------------------------------//
 
 MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) {
 
     /*===== TODO: Open and read events file =====*/
+    string line;
+    if(!eventsStream) {
+        throw EventExeption();
+    }
+    auto *Events=new queue<shared_ptr<Event>>;
+    while (std::getline(eventsStream,line)){
+        std::istringstream lineStream(line); // Create a string stream for each line
+        std::string word;
+        std::map<string, shared_ptr<Event>> EventMap = GetEventMap();
+        while (lineStream >> word) {  // Read each word in the line
+            if(word != "Pack"){
+                if(!isWord(word)){
+                    throw EventExeption();
+                }
+                auto it = EventMap.find(word);
+                if(it != EventMap.end()){
+                    Events->push(EventMap[word]);
+                } else{
+                    throw EventExeption();
+                }
+            } else{
 
+            }
+        }
+    }
     /*==========================================*/
 
 
