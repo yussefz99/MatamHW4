@@ -2,7 +2,6 @@
 #pragma once
 
 #include <iostream>
-#include <string>
 #include <memory>
 #include <vector>
 #include <queue>
@@ -15,20 +14,7 @@
 #include "Players/Player.h"
 #include "Events/Event.h"
 #include "Events/Encounter.h"
-#include "Events/Snail.h"
-#include "Events/Slime.h"
-#include "Events/Pack.h"
-#include "Events/Balrog.h"
 #include "Events/SpecialEvent.h"
-#include "Events/PotionsMerchant.h"
-#include "Events/SolarEclips.h"
-#include "Players/Job.h"
-#include "Players/Character.h"
-#include "Players/Warrior.h"
-#include "Players/Magician.h"
-#include "Players/Archer.h"
-#include "Players/Responsible.h"
-#include "Players/RiskTaking.h"
 
 using std::shared_ptr;
 using std::vector;

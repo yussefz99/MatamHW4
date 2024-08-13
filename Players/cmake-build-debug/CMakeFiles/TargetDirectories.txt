@@ -1,0 +1,3 @@
+C:/Users/yusse/OneDrive/Desktop/MatamHW4/Players/cmake-build-debug/CMakeFiles/Players.dir
+C:/Users/yusse/OneDrive/Desktop/MatamHW4/Players/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/yusse/OneDrive/Desktop/MatamHW4/Players/cmake-build-debug/CMakeFiles/rebuild_cache.dir

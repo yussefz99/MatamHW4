@@ -14,4 +14,48 @@ public:
     virtual ~Job()=default;
 };
 
+///----------------ARCHER CLASS------------------------
+
+class Archer : public Job{
+public:
+    Archer()=default;
+    int combat_power(int force, int level) override{
+        return force+level;
+
+    }
+    std::string get_job() override{
+        return "Archer";
+
+    }
+    ~Archer()override=default;
+};
+
+///------------------MAGICIAN CLASS-----------------------------
+
+class Magician:public Job{
+public:
+    int combat_power(int force, int level) override{
+        return force+level;
+
+    }
+    std::string get_job() override{
+        return "Magician";
+    }
+    ~Magician()override=default;
+    Magician()=default;
+};
+
+///---------------------WARRIOR CLASS--------------------------
+
+class Warrior :public Job{
+public:
+    Warrior()=default;
+    int combat_power(int force, int level) override{
+        return (force*2)+level;
+    }
+    std::string get_job() override{
+        return "Warrior";
+    }
+    ~Warrior()override=default;
+};
 #endif //MATAMHW4_JOB_H

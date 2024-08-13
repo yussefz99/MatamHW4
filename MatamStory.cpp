@@ -19,8 +19,6 @@ public:
 
 
 
-
-
 void print_Outcome(Player& player,int result,int outcome){
     if(outcome == 0){
         std::string outcome_massege = getEncounterWonMessage(player,result);
@@ -65,16 +63,9 @@ void sortPlayers(vector<shared_ptr<Player>>& players) {
 
 
 std::vector<shared_ptr<Player>> MakeBoard(vector<shared_ptr<Player>> Players){
-//   unsigned int PlayersLength=Players.size();  // unsigend????
     vector<shared_ptr<Player>> Leader = Players;
-//    for(int i=10;i>-1;i--){
-//        for(int j=0;j<PlayersLength;j++){
-//            if(Players[j]->getLevel()==i){
-//                Leader.push_back(Players[j]);
-//            }
-//        }
-//    }
     sortPlayers(Leader);
+    std::reverse(Leader.begin(),Leader.end());
     return Leader;
 }
 
@@ -82,12 +73,6 @@ std::vector<shared_ptr<Player>> MakeBoard(vector<shared_ptr<Player>> Players){
 
 bool IsWinner(const shared_ptr<vector<shared_ptr<Player>>>& Players) ///const& ??????
 {
-//    int length=Players->size();
-//    for(int i=0;i<length;i++){
-//        if((*Players)[i]->getLevel()==10){
-//            return true;
-//        }
-//    }
     for(auto& player : *Players){
         if(player->getLevel()==10)return true;
     }
@@ -137,7 +122,7 @@ std::map<std::string,shared_ptr<Character>> GetCharcterMap(){
 std::map<std::string,shared_ptr<Job>> GetJobMap(){
     typename std::map<std::string,shared_ptr<Job>> myMap;
     myMap["Warrior"] =std::make_shared<Warrior>();
-    myMap["Sorcerer"] =std::make_shared<Archer>();
+    myMap["Archer"] =std::make_shared<Archer>();
     myMap["Magician"] =std::make_shared<Magician>();
     return myMap;
 }
@@ -162,62 +147,108 @@ bool isWord(string str){
 }
 
 
-void MakePack(const vector<string>& words,shared_ptr<vector<shared_ptr<Encounter>>>Members) {
-    std::string packWord;
-    std::map<string, shared_ptr<Encounter>> EncounterMap = GetEncounterMap();
-    shared_ptr<vector<shared_ptr<Encounter>>> PackMembers(new vector<shared_ptr<Encounter>>);
-    int size = 0;
-    size = std::stoi(words[1]);
-    if (size < 2) {
+string GetStr(string line,int* index){
+    string current;
+    int i=*index;
+    int length=line.size();
+    if(*index >= length){
+        return "";
+    }
+    while(( line[*index] != ' ' && line[*index]!='\n') && *index < length ){
+        (*index)++;
+    }
+    current=line.substr(i,(*index)-i);
+    if(current.back() == 13){
+        current.pop_back();
+    }
+    return current;
+}
+
+int NewIndex(int index,string line){
+    int length=line.size();
+    while(index<length && (line[index] == ' ' || line[index] == '\n')){
+        index++;
+    }
+    return index;
+}
+
+
+bool MakePack(string line,int MemebersNum,shared_ptr<vector<shared_ptr<Encounter>>>Members,int* index
+              , std::map<string,shared_ptr<Event>> CardsMap) {
+
+    if (MemebersNum < 2){
         throw EventExeption();
     }
-    for (size_t i = 0; i < words.size();) {
-        if (words[i] == "Pack") {
-            if (i + 1 >= words.size() || !isNumber(words[i + 1])) {
+    string current;
+    bool flag=true;
+    while(MemebersNum && line[*index]){
+        *index= NewIndex(*index,line);
+        current= GetStr(line,index);
+        if(current == "Pack"){
+            *index= NewIndex(*index,line);
+            current= GetStr(line,index);
+            if(!isNumber(current)){
                 throw EventExeption();
             }
-            i += 2;
-            std::vector<std::shared_ptr<Encounter>> temp_Members;
-            int count = 0;
-            while (words[i] != "Pack" && i < words.size()) {
-                std::shared_ptr<Encounter> monster = EncounterMap[words[i]];
-                temp_Members.push_back(monster);
-                i++;
-                count++;
+            flag=MakePack(line,std::stoi(current),Members, index, CardsMap);
+            MemebersNum--;
+            continue;
+        }
+        std::map<string, shared_ptr<Encounter>> EncounterMap=GetEncounterMap();
+        auto it = EncounterMap.find(current);
+        if (it != EncounterMap.end()) {
+            Members->push_back(EncounterMap[current]);
+        } else {
+            throw EventExeption();
+        }
+        MemebersNum--;
+    }
+    if(MemebersNum != 0 || !flag){
+        return false;
+    }
+    return true;
+}
+
+
+void fillQueue(string line,std::queue<shared_ptr<Event>> *Cards){
+    int index = 0;
+    string current;
+    int length=line.size();
+    std::map<string, shared_ptr<Event>> CardsMap = GetEventMap();
+    shared_ptr<vector<shared_ptr<Encounter>>> GangMembers(new vector<shared_ptr<Encounter>>) ;
+    while (index < length) {
+        current="";
+        index = NewIndex(index, line);
+        current += GetStr(line, &index);
+        if(current == ""){
+            break;
+        }
+        if (isNumber(current) == true) {
+            throw EventExeption();
+        }
+        auto it = CardsMap.find(current);
+        if (it != CardsMap.end()) {
+            Cards->push(CardsMap[current]);
+        } else {
+            throw EventExeption();
+        }
+        if (current == "Pack") {
+            index = NewIndex(index, line);
+            current = GetStr(line, &index);
+            if (!isNumber(current)) {
+                throw EventExeption();
             }
-            std::shared_ptr<Pack> newMember(new Pack(temp_Members, count)); ///????
-            Members->push_back(newMember);
-        }else{
-            std::shared_ptr<Encounter> monster = EncounterMap[words[i]];
-            Members->push_back(monster);
-            i++;
+            try{
+                MakePack(line,std::stoi(current),GangMembers,&index,CardsMap);
+            }catch (std::out_of_range& e) {
+                throw EventExeption();
+            }
+            shared_ptr<Pack> myGang=std::make_shared<Pack>(*GangMembers,std::stoi(current));
+            Cards->back()=myGang;//Gang constructor
+            GangMembers->clear();
         }
     }
 }
-//
-//while (lineStream >> packWord){
-//if(count == 1){
-//if(!isNumber(packWord)){
-//throw EventExeption();
-//}
-//int number = std::stoi(packWord);
-//if(number < 2){
-//throw EventExeption();
-//}
-//}
-//if(count > 1){
-//if(isWord(packWord)){
-//throw EventExeption();
-//}
-//auto it = EncounterMap.find(packWord);
-//if(it != EncounterMap.end()){
-//PackMembers->push_back(EncounterMap[packWord]);
-//} else{
-//throw EventExeption();
-//}
-//}
-//count++;
-//}
 
 
 void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstream& line){
@@ -246,42 +277,70 @@ void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstre
         throw PlayersExeption();
     }
     shared_ptr<Job> myJob = jobMap[job];
-    shared_ptr<Character> myBehavior = CharcterMap[charcter];
-    shared_ptr<Player> player1 = std::make_shared<Player>(name, myJob, myBehavior);
+    shared_ptr<Character> myCHarcter = CharcterMap[charcter];
+    shared_ptr<Player> player1 = std::make_shared<Player>(name, myJob, myCHarcter);
     Players->push_back(player1);
 }
 
 ///-----------------------------------MATAMSTORY----------------------------------------------------//
 
+//    string line;
+//    if(!eventsStream) {
+//        throw EventExeption();
+//    }
+//    auto *Events=new queue<shared_ptr<Event>>;
+//    std::map<string, shared_ptr<Event>> EventMap = GetEventMap();
+//    while (std::getline(eventsStream,line)) {
+//        std::istringstream lineStream(line); // Create a string stream for each line
+//        std::string word;
+//        vector<string> words;
+//        while (lineStream >> word) {  // Read each word in the line
+//            words.push_back(word);
+//        }
+//        if(words[0] == "Pack"){
+//            shared_ptr<vector<shared_ptr<Encounter>>> PackMembers(new vector<shared_ptr<Encounter>>);
+//            MakePack(words,PackMembers);
+//            shared_ptr<Pack> myPack=std::make_shared<Pack>(*PackMembers,std::stoi(words[1]));
+//            Events->back()=myPack;//Gang constructor
+//            PackMembers->clear(); // ?????
+//        } else{
+//            auto it = EventMap.find(words[0]);
+//            if(it == EventMap.end()){
+//                throw EventExeption();
+//            }
+//            shared_ptr<Event> event = EventMap[words[0]];
+//        }
+//    }
+
+
+
 MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) {
 
     /*===== TODO: Open and read events file =====*/
-    string line;
+
+    string line, singleLine="";
     if(!eventsStream) {
         throw EventExeption();
     }
-    auto *Events=new queue<shared_ptr<Event>>;
-    std::map<string, shared_ptr<Event>> EventMap = GetEventMap();
-    while (std::getline(eventsStream,line)) {
-        std::istringstream lineStream(line); // Create a string stream for each line
-        std::string word;
-        vector<string> words;
-        while (lineStream >> word) {  // Read each word in the line
-            words.push_back(word);
+
+    typename std::queue<shared_ptr<Event>> *Events=new queue<shared_ptr<Event>>;
+    while (std::getline(eventsStream,line)){
+        singleLine += line;
+        if(singleLine.back() == '\n'){
+            singleLine.pop_back();
         }
-        if(words[0] == "Pack"){
-            shared_ptr<vector<shared_ptr<Encounter>>> PackMembers(new vector<shared_ptr<Encounter>>);
-            MakePack(words,PackMembers);
-            shared_ptr<Pack> myPack=std::make_shared<Pack>(*PackMembers,std::stoi(words[1]));
-            Events->back()=myPack;//Gang constructor
-            PackMembers->clear(); // ?????
-        } else{
-            auto it = EventMap.find(words[0]);
-            if(it == EventMap.end()){
-                throw EventExeption();
-            }
-            shared_ptr<Event> event = EventMap[words[0]];
-        }
+        singleLine+=" ";
+    }
+
+    try{
+        fillQueue(singleLine,Events);
+    }catch (EventExeption& e){
+        delete Events;
+        throw;
+    }
+    if(Events->size() < 2 ){
+        delete Events;
+        throw EventExeption();
     }
     /*==========================================*/
 
@@ -373,7 +432,7 @@ void MatamStory::play() {
 
     printGameOver();
     /*===== TODO: Print either a "winner" message or "no winner" message =====*/
-    printGameOver();
+
     if (AllOUT(Players_Vec))printNoWinners();
     if (IsWinner(Players_Vec)){
         std::vector<shared_ptr<Player>> Leader_Board = MakeBoard(*Players_Vec);

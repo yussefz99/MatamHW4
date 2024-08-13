@@ -1,0 +1,23 @@
+# ninja log v5
+38	1004	7451829368023639	CMakeFiles/MatamHW4.dir/Players/Job.cpp.obj	1ad927ac6cabb31c
+48	491	7451861790165783	CMakeFiles/MatamHW4.dir/Players/Character.cpp.obj	184278ec1793daaa
+757	1380	7451861799024370	CMakeFiles/MatamHW4.dir/Events/PotionsMerchant.cpp.obj	c54c02099be2e01c
+1007	1902	7451829377046080	CMakeFiles/MatamHW4.dir/Players/Archer.cpp.obj	6762f55889bfb746
+39	1167	7452461469860969	CMakeFiles/MatamHW4.dir/Utilities.cpp.obj	830bd65d4bfbc03a
+6	1168	7452461469870980	CMakeFiles/MatamHW4.dir/Players/Player.cpp.obj	cd3ce5e77d5aa638
+73	1371	7452461471935757	CMakeFiles/MatamHW4.dir/main.cpp.obj	3f12ca62b1a37d77
+1769	2484	7451829382863911	CMakeFiles/MatamHW4.dir/Players/Warrior.cpp.obj	907ccc837ffea594
+1902	2640	7451829384252855	CMakeFiles/MatamHW4.dir/Players/Magician.cpp.obj	d4f7bdb00bf5cc8b
+61	526	7451861790496094	CMakeFiles/MatamHW4.dir/Players/Responsible.cpp.obj	afb8b30914108dc0
+55	1088	7452461469095063	CMakeFiles/MatamHW4.dir/Events/Event.cpp.obj	e8dd646a2118b055
+664	1245	7451861797711119	CMakeFiles/MatamHW4.dir/Events/SolarEclips.cpp.obj	ad7969515194f31d
+633	1189	7451861797150066	CMakeFiles/MatamHW4.dir/Events/SpecialEvent.cpp.obj	c1b12dd0df894e73
+1087	1664	7451861801906422	CMakeFiles/MatamHW4.dir/Events/Encounter.cpp.obj	5ab6ae090f34dbaf
+527	1038	7451861795567724	CMakeFiles/MatamHW4.dir/Players/RiskTaking.cpp.obj	ab17d049ee64c713
+1189	1759	7451861802857209	CMakeFiles/MatamHW4.dir/Events/Slime.cpp.obj	d90048e28a09dee8
+1038	1629	7451861801545963	CMakeFiles/MatamHW4.dir/Events/Snail.cpp.obj	f9b893ad54a441f9
+1245	1838	7451861803628325	CMakeFiles/MatamHW4.dir/Events/Pack.cpp.obj	297708d7f01c33cb
+1381	1907	7451861804330475	CMakeFiles/MatamHW4.dir/Events/Balrog.cpp.obj	4effcc78089cfcfb
+23	3157	7452461489701127	CMakeFiles/MatamHW4.dir/MatamStory.cpp.obj	d82d5b8e2e95c5c2
+3158	3971	7452461497852781	MatamHW4.exe	1e1ab0ebe68690dc
+1	147	7452470564264035	build.ninja	282478bcfa3bbd82

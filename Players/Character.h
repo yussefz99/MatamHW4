@@ -8,9 +8,31 @@
 class Character{
 public:
     Character()=default;
-   // virtual int buy_hp(int* coins,int* hp)=0;
     virtual std::string get_Character()=0;
     virtual ~Character()=default;
 };
+
+///--------------------RESPONSIBLE CLASS------------------------
+
+class Responsible : public Character{
+public:
+    Responsible()=default;
+    std::string get_Character() override{
+        return "Responsible";
+    }
+    ~Responsible()override=default;
+};
+
+///----------------RISKTACKING CLASS-----------------------
+
+class RiskTaking:public Character{
+public:
+    RiskTaking()=default;
+    std::string get_Character() override{
+        return "RiskTaking";
+    }
+    ~RiskTaking()override=default;
+};
+
 
 #endif //MATAMHW4_CHARACTER_H
