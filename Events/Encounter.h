@@ -17,7 +17,7 @@ public:
     virtual int Get_CombatPower()=0;
     virtual int Get_Loot()=0;
     virtual int Get_Damage()=0;
-    virtual string getDescription() const=0;
+    virtual string getDescription()const=0;
     virtual ~Encounter()=default;
 protected:
     int CombatPower;

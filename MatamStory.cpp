@@ -41,19 +41,6 @@ void print_Outcome(Player& player,int result,int outcome){
 
 //-------------------------------SORT THE LEADBORAD------------------------------------
 
-//bool comparePlayers(const std::shared_ptr<Player>& player1, const std::shared_ptr<Player>& player2){
-//    // Compare by level
-//    if (player1->getLevel() != player2->getLevel()) {
-//        return player1->getLevel() > player2->getLevel();  // Highest level first
-//    }
-//    // If levels are the same, compare by coins
-//    if (player1->getCoins() != player2->getCoins()) {
-//        return player1->getCoins() > player2->getCoins();  // Highest coins first
-//    }
-//    // If levels and coins are the same, compare by name
-//    return player1->getName() < player2->getName();  // Alphabetical order by name
-//}
-
 
 void sortPlayers(vector<shared_ptr<Player>>& players) {
     // Using std::sort with custom comparator
@@ -94,6 +81,8 @@ bool AllOUT(const shared_ptr<vector<shared_ptr<Player>>>& Players){
 //----------------------------------------setUp the constactor-------------------------------------------------
 
 
+/// Maps for code simlifiction
+
 std::map<string,shared_ptr<Event>> GetEventMap(){
     typename std::map<std::string,shared_ptr<Event>> Eventmap;
     Eventmap["Snail"] = std::make_shared<Snail>();
@@ -104,6 +93,7 @@ std::map<string,shared_ptr<Event>> GetEventMap(){
     Eventmap["PotionsMerchant"] =std::make_shared<PotionsMerchant>();
     return Eventmap;
 }
+
 std::map<string,shared_ptr<Encounter>> GetEncounterMap(){
     typename std::map<std::string,shared_ptr<Encounter>> Encountermap;
     Encountermap["Snail"] = std::make_shared<Snail>();
@@ -119,6 +109,7 @@ std::map<std::string,shared_ptr<Character>> GetCharcterMap(){
     myMap["Responsible"] = std::make_shared<Responsible>();
     return myMap;
 }
+
 std::map<std::string,shared_ptr<Job>> GetJobMap(){
     typename std::map<std::string,shared_ptr<Job>> myMap;
     myMap["Warrior"] =std::make_shared<Warrior>();
@@ -147,109 +138,56 @@ bool isWord(string str){
 }
 
 
-string GetStr(string line,int* index){
-    string current;
-    int i=*index;
-    int length=line.size();
-    if(*index >= length){
-        return "";
+void MakePack(vector<string> words,shared_ptr<vector<shared_ptr<Encounter>>>Members
+              , std::map<string,shared_ptr<Event>> EventsMap,int index,int membersNum){
+    if(membersNum < 2)throw EventExeption();
+    int len = words.size();
+    while (membersNum != 0 && index < len){
+        if(words[index] == "Pack"){
+            if(!isNumber(words[index+1]))throw EventExeption();
+            if(std::stoi(words[index+1]) < 2)throw EventExeption();
+            //makepck(words,Members,EventsMap,index+2,std::stoi(words[index+1]));
+            index+=2;
+            membersNum--;
+        } else{
+            std::map<string, shared_ptr<Encounter>> EncounterMap=GetEncounterMap();
+            auto it = EncounterMap.find(words[index]);
+            if (it != EncounterMap.end()) {
+                Members->push_back(EncounterMap[words[index]]);
+            } else {
+                throw EventExeption();
+            }
+            membersNum--;
+            index++;
+        }
     }
-    while(( line[*index] != ' ' && line[*index]!='\n') && *index < length ){
-        (*index)++;
-    }
-    current=line.substr(i,(*index)-i);
-    if(current.back() == 13){
-        current.pop_back();
-    }
-    return current;
 }
 
-int NewIndex(int index,string line){
-    int length=line.size();
-    while(index<length && (line[index] == ' ' || line[index] == '\n')){
-        index++;
+void AddEvent(std::istringstream& line,std::queue<shared_ptr<Event>> *Events){
+    shared_ptr<vector<shared_ptr<Encounter>>> PackMembers(new vector<shared_ptr<Encounter>>) ;
+    std::map<string, shared_ptr<Event>> EventsMap = GetEventMap();
+    string word;
+    vector<string> words;
+    while (line >> word){
+        words.push_back(word);
     }
-    return index;
-}
-
-
-bool MakePack(string line,int MemebersNum,shared_ptr<vector<shared_ptr<Encounter>>>Members,int* index
-              , std::map<string,shared_ptr<Event>> CardsMap) {
-
-    if (MemebersNum < 2){
+    if(words.size()==1){
+        if(!isWord(words[0]))throw EventExeption();
+        auto it = EventsMap.find(words[0]);
+        if(it == EventsMap.end())throw EventExeption();
+        Events->push(EventsMap[words[0]]);
+    } else if(words[0] == "Pack"){
+        if(!isNumber(words[1]))throw EventExeption();
+        int num = std::stoi(words[1]);
+        MakePack(words,PackMembers,EventsMap,0,num+1); // try and catch????? +111111???
+        shared_ptr<Pack> myPack=std::make_shared<Pack>(*PackMembers,num);
+        Events->push(myPack);//Gang constructor
+        PackMembers->clear();
+    }
+    else{
         throw EventExeption();
     }
-    string current;
-    bool flag=true;
-    while(MemebersNum && line[*index]){
-        *index= NewIndex(*index,line);
-        current= GetStr(line,index);
-        if(current == "Pack"){
-            *index= NewIndex(*index,line);
-            current= GetStr(line,index);
-            if(!isNumber(current)){
-                throw EventExeption();
-            }
-            flag=MakePack(line,std::stoi(current),Members, index, CardsMap);
-            MemebersNum--;
-            continue;
-        }
-        std::map<string, shared_ptr<Encounter>> EncounterMap=GetEncounterMap();
-        auto it = EncounterMap.find(current);
-        if (it != EncounterMap.end()) {
-            Members->push_back(EncounterMap[current]);
-        } else {
-            throw EventExeption();
-        }
-        MemebersNum--;
-    }
-    if(MemebersNum != 0 || !flag){
-        return false;
-    }
-    return true;
 }
-
-
-void fillQueue(string line,std::queue<shared_ptr<Event>> *Cards){
-    int index = 0;
-    string current;
-    int length=line.size();
-    std::map<string, shared_ptr<Event>> CardsMap = GetEventMap();
-    shared_ptr<vector<shared_ptr<Encounter>>> GangMembers(new vector<shared_ptr<Encounter>>) ;
-    while (index < length) {
-        current="";
-        index = NewIndex(index, line);
-        current += GetStr(line, &index);
-        if(current == ""){
-            break;
-        }
-        if (isNumber(current) == true) {
-            throw EventExeption();
-        }
-        auto it = CardsMap.find(current);
-        if (it != CardsMap.end()) {
-            Cards->push(CardsMap[current]);
-        } else {
-            throw EventExeption();
-        }
-        if (current == "Pack") {
-            index = NewIndex(index, line);
-            current = GetStr(line, &index);
-            if (!isNumber(current)) {
-                throw EventExeption();
-            }
-            try{
-                MakePack(line,std::stoi(current),GangMembers,&index,CardsMap);
-            }catch (std::out_of_range& e) {
-                throw EventExeption();
-            }
-            shared_ptr<Pack> myGang=std::make_shared<Pack>(*GangMembers,std::stoi(current));
-            Cards->back()=myGang;//Gang constructor
-            GangMembers->clear();
-        }
-    }
-}
-
 
 void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstream& line){
     string word , name, job,charcter;
@@ -284,64 +222,30 @@ void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstre
 
 ///-----------------------------------MATAMSTORY----------------------------------------------------//
 
-//    string line;
-//    if(!eventsStream) {
-//        throw EventExeption();
-//    }
-//    auto *Events=new queue<shared_ptr<Event>>;
-//    std::map<string, shared_ptr<Event>> EventMap = GetEventMap();
-//    while (std::getline(eventsStream,line)) {
-//        std::istringstream lineStream(line); // Create a string stream for each line
-//        std::string word;
-//        vector<string> words;
-//        while (lineStream >> word) {  // Read each word in the line
-//            words.push_back(word);
-//        }
-//        if(words[0] == "Pack"){
-//            shared_ptr<vector<shared_ptr<Encounter>>> PackMembers(new vector<shared_ptr<Encounter>>);
-//            MakePack(words,PackMembers);
-//            shared_ptr<Pack> myPack=std::make_shared<Pack>(*PackMembers,std::stoi(words[1]));
-//            Events->back()=myPack;//Gang constructor
-//            PackMembers->clear(); // ?????
-//        } else{
-//            auto it = EventMap.find(words[0]);
-//            if(it == EventMap.end()){
-//                throw EventExeption();
-//            }
-//            shared_ptr<Event> event = EventMap[words[0]];
-//        }
-//    }
-
-
 
 MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) {
 
     /*===== TODO: Open and read events file =====*/
 
-    string line, singleLine="";
+    string lineEvent, linePlayer;
     if(!eventsStream) {
         throw EventExeption();
     }
-
     typename std::queue<shared_ptr<Event>> *Events=new queue<shared_ptr<Event>>;
-    while (std::getline(eventsStream,line)){
-        singleLine += line;
-        if(singleLine.back() == '\n'){
-            singleLine.pop_back();
+    while (std::getline(eventsStream,lineEvent)){
+        std::istringstream lineStreamEvent(lineEvent); // Create a string stream for each line
+        try {
+            AddEvent(lineStreamEvent,Events);
+        }catch (...){
+            delete Events;
+            throw EventExeption();
         }
-        singleLine+=" ";
     }
-
-    try{
-        fillQueue(singleLine,Events);
-    }catch (EventExeption& e){
-        delete Events;
-        throw;
-    }
-    if(Events->size() < 2 ){
+    if(Events->size() < 2 ) {
         delete Events;
         throw EventExeption();
     }
+
     /*==========================================*/
 
 
@@ -351,13 +255,13 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
         delete Events;
         throw PlayersExeption();
     }
-    while (std::getline(playersStream,line)){
-        std::istringstream lineStream(line); // Create a string stream for each line
+    while (std::getline(playersStream,linePlayer)){
+        std::istringstream lineStream(linePlayer); // Create a string stream for each line
         try{
             AddPlayers(Players,lineStream);
-        }catch (PlayersExeption& e){
+        }catch (...){
             delete Events;
-            throw;
+            throw PlayersExeption();
         }
     }
     if(Players->size()<2 || Players->size() > 6){
