@@ -48,7 +48,7 @@ public:
         std::string charcter = player.get_charecter();
         int player_coins = player.getCoins();
         int player_Maxhp = player.get_Maxhp();
-        int player_Hp = player.get_Maxhp();
+        int player_Hp = player.getHealthPoints();
         outcome=2;
         int counter=0;
         if(charcter == "Responsible"){

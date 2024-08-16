@@ -18,6 +18,7 @@ public:
     virtual int Get_Loot()=0;
     virtual int Get_Damage()=0;
     virtual string getDescription()const=0;
+    virtual string getName()const=0;
     virtual ~Encounter()=default;
 protected:
     int CombatPower;
@@ -67,6 +68,10 @@ public:
     string getDescription() const override{
         return "Balrog (power "+ std::to_string(CombatPower) + ", loot 100, damage 9001)";
     }
+    string getName()const override{
+         return "Balrog";
+    }
+
     ~Balrog()override=default;
 };
 
@@ -109,6 +114,9 @@ public:
     }
     string getDescription() const override{
         return  "Snail (power 5, loot 2, damage 10)";
+    }
+    string getName()const override{
+        return "Snail";
     }
     ~Snail()override=default;
 };
@@ -154,6 +162,9 @@ public:
     string getDescription() const override{
         return "Slime (power 12, loot 5, damage 25)";
     }
+    string getName()const override{
+        return "Slime";
+    }
     ~Slime()override=default;
 };
 
@@ -162,7 +173,9 @@ public:
 class Pack : public Encounter{
 private:
     int pack_num;
+    int is_balrog= 0;
 public:
+    Pack():Encounter(0,0,0),pack_num(0),is_balrog(0){}
     Pack(const std::vector<std::shared_ptr<Encounter>>& Pack_Members,int num):
             Encounter(0,0,0),pack_num(num){
         int Pack_CombatPower=0;
@@ -172,6 +185,7 @@ public:
             Pack_CombatPower+=Pack_Member->Get_CombatPower();
             Pack_Loot+=Pack_Member->Get_Loot();
             Pack_Damage+=Pack_Member->Get_Damage();
+            if(Pack_Member->getName() == "Balrog")is_balrog++;
         }
         CombatPower = Pack_CombatPower;
         Loot = Pack_Loot;
@@ -186,11 +200,13 @@ public:
                 player.set_HP(hp-10);
             }
             outcome=0;
+            if(is_balrog > 0)CombatPower+=(2*is_balrog);
             return Loot;
         } else{
             int hp = player.getHealthPoints();
             player.set_HP(hp-Damage);
             outcome=1;
+            if(is_balrog > 0)CombatPower+=(2*is_balrog);
             return Damage;
         }
     }
@@ -210,7 +226,11 @@ public:
         return  "Pack of "+std::to_string(pack_num)+" members (power "+std::to_string(CombatPower)+
                 ", loot "+std::to_string(Loot)+", damage "+std::to_string(Damage)+")";
     }
+    string getName()const override{
+        return "Pack";
+    }
     ~Pack()override=default;
 };
+
 
 #endif //MATAMHW4_ENCOUNTER_H

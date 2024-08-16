@@ -25,8 +25,8 @@ using std::exception;
 class MatamStory{
 private:
     unsigned int m_turnIndex;
-    std::queue<shared_ptr<Event>>* Events_queue;
     shared_ptr<vector<shared_ptr<Player>>> Players_Vec;
+    std::queue<shared_ptr<Event>>* Events_queue;
     /**
      * Playes a single turn for a player
      *
@@ -61,11 +61,14 @@ public:
      *
     */
     MatamStory(std::istream& eventsStream, std::istream& playersStream);
-    ~MatamStory();
     /**
      * Plays the entire game
      *
      * @return - void
     */
     void play();
+
+    ///add a destractor
+    ~MatamStory();
+
 };

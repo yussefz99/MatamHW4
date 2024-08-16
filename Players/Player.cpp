@@ -57,7 +57,7 @@ void Player::set_HP(int hp) {
     } else{
         this->m_currHP=hp;
     }
-   if(m_currHP < 0)m_currHP=0;
+   if(hp < 0)m_currHP=0;
 }
 
 void Player::set_force(int Newforce) {
@@ -94,5 +94,5 @@ bool Player::operator<(const Player &other) const {
         return m_coins < other.m_coins;  // Highest coins first
     }
     // If levels and coins are the same, compare by name
-    return m_name < other.m_name;  // Alphabetical order by name
+    return m_name > other.m_name;  // Alphabetical order by name
 }
