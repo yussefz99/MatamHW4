@@ -160,12 +160,8 @@ bool MakePack(vector<string> words,shared_ptr<vector<shared_ptr<Encounter>>>Memb
     return true;
 }
 
-void AddEvent(std::istringstream& line,std::queue<shared_ptr<Event>> *Events){
+void AddEvent(vector<string> words,std::queue<shared_ptr<Event>> *Events){
    string word;
-   vector<string> words;
-    while (line >> word){
-        words.push_back(word);
-    }
     int index = 0;
     string current;
     int length=words.size();
@@ -197,13 +193,9 @@ void AddEvent(std::istringstream& line,std::queue<shared_ptr<Event>> *Events){
     }
 }
 
-void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstream& line){
+void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,vector<string> words){
     string word , name, job,charcter;
     int index=0;
-    vector<string> words;
-    while (line >> word){
-        words.push_back(word);
-    }
     int len = words.size();
     while (index < len){
         if(index+1 >= len)throw PlayersExeption();
@@ -230,7 +222,8 @@ void AddPlayers( shared_ptr<vector<shared_ptr<Player>>> Players,std::istringstre
 MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) {
 
     /*===== TODO: Open and read events file =====*/
-
+    vector<string> events_words;
+    string event_word;
     string lineEvent, linePlayer;
     if(!eventsStream) {
         throw EventExeption();
@@ -238,12 +231,15 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
     auto *Events=new queue<shared_ptr<Event>>;
     while (std::getline(eventsStream,lineEvent)){
         std::istringstream lineStreamEvent(lineEvent); // Create a string stream for each line
-        try {
-            AddEvent(lineStreamEvent,Events);
-        }catch (...){
-            delete Events;
-            throw EventExeption();
+        while (lineStreamEvent >> event_word){
+            events_words.push_back(event_word);
         }
+    }
+    try {
+        AddEvent(events_words,Events);
+    }catch (...){
+        delete Events;
+        throw EventExeption();
     }
     if(Events->size() < 2 ) {
         delete Events;
@@ -254,6 +250,8 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
 
 
     /*===== TODO: Open and Read players file =====*/
+    vector<string> players_words;
+    string player_word;
     shared_ptr<vector<shared_ptr<Player>>> Players(new vector<shared_ptr<Player>>) ;
     if(!playersStream){
         delete Events;
@@ -261,12 +259,15 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
     }
     while (std::getline(playersStream,linePlayer)){
         std::istringstream lineStream(linePlayer); // Create a string stream for each line
-        try{
-            AddPlayers(Players,lineStream);
-        }catch (...){
-            delete Events;
-            throw PlayersExeption();
+        while (lineStream >> player_word){
+            players_words.push_back(player_word);
         }
+    }
+    try{
+        AddPlayers(Players,players_words);
+    }catch (...){
+        delete Events;
+        throw PlayersExeption();
     }
     if(Players->size()<2 || Players->size() > 6){
         delete Events;

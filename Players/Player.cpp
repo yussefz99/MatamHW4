@@ -83,6 +83,7 @@ void Player::add_level() {
 
 void Player::add_force(int toAdd) {
     m_force+=toAdd;
+    if(m_force < 0)m_force=0;
 }
 
 bool Player::operator<(const Player &other) const {

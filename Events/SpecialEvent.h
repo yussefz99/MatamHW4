@@ -27,10 +27,14 @@ public:
             player.add_force(1);
             return 1;
         } else{
-            player.add_force(-1);
-            return -1;
+            if(player.getForce() > 0){
+                player.add_force(-1);
+                return -1;
+            }
+            return 0;
         }
     }
+
     int Get_OutCome() const override{
         return outcome;
     }
