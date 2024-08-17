@@ -1,0 +1,380 @@
+* commit a9e4c171f793a1f2a6b25a7f1595dddcc8f3b229
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Sat Aug 17 23:32:30 2024 +0300
+| 
+|     Create dry.pdf
+| 
+|  dry.pdf | Bin 0 -> 242944 bytes
+|  1 file changed, 0 insertions(+), 0 deletions(-)
+| 
+* commit ddb97e7b371ed54af5753ab6813f15924b2901ad
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Sat Aug 17 15:34:22 2024 +0300
+| 
+|     update
+| 
+|  Events/SpecialEvent.h |  8 ++++++--
+|  MatamStory.cpp        | 43 ++++++++++++++++++++++---------------------
+|  Players/Player.cpp    |  1 +
+|  3 files changed, 29 insertions(+), 23 deletions(-)
+| 
+* commit f506de306d71f69bb1fd9ccc8d7e5366df83aa77
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Fri Aug 16 17:03:33 2024 +0300
+| 
+|     finish
+| 
+|  Events/Encounter.h    |  20 +++++
+|  Events/SpecialEvent.h |   2 +-
+|  MatamStory.cpp        | 226 +++++++++++++++++++++++++-----------------------
+|  MatamStory.h          |   7 +-
+|  Players/Player.cpp    |   4 +-
+|  5 files changed, 147 insertions(+), 112 deletions(-)
+| 
+* commit c36d7d9ba44dee8df40054d8ae0f26b27ad703a8
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Wed Aug 14 15:34:57 2024 +0300
+| 
+|     finish
+| 
+|  Events/Encounter.h |   2 +-
+|  MatamStory         | Bin 1559232 -> 518064 bytes
+|  MatamStory.cpp     | 216 ++++++++++++++-------------------------------------
+|  test1.out          |   1 -
+|  test3.out          |   1 +
+|  test4.out          |   1 +
+|  6 files changed, 63 insertions(+), 158 deletions(-)
+| 
+* commit c43d96d49be842be372fa09d92007c63030605a0
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Tue Aug 13 14:40:44 2024 +0300
+| 
+|     completed
+| 
+|  .idea/.gitignore                                  |    8 +
+|  .idea/MatamHW4.iml                                |    2 +
+|  .idea/misc.xml                                    |    4 +
+|  .idea/modules.xml                                 |    8 +
+|  .idea/vcs.xml                                     |    6 +
+|  CMakeLists.txt                                    |   24 +
+|  Events/Balrog.cpp                                 |   49 -
+|  Events/Balrog.h                                   |   23 -
+|  Events/Encounter.cpp                              |   10 -
+|  Events/Encounter.h                                |  191 ++-
+|  Events/Pack.cpp                                   |   61 -
+|  Events/Pack.h                                     |   23 -
+|  Events/PotionsMerchant.cpp                        |   43 -
+|  Events/PotionsMerchant.h                          |   17 -
+|  Events/Slime.cpp                                  |   48 -
+|  Events/Slime.h                                    |   23 -
+|  Events/Snail.cpp                                  |   45 -
+|  Events/Snail.h                                    |   24 -
+|  Events/SolarEclips.cpp                            |   26 -
+|  Events/SolarEclips.h                              |   18 -
+|  Events/SpecialEvent.cpp                           |    6 -
+|  Events/SpecialEvent.h                             |   63 +
+|  MatamStory                                        |  Bin 0 -> 1559232 bytes
+|  MatamStory.cpp                                    |  239 ++--
+|  MatamStory.h                                      |   14 -
+|  Players/.idea/.gitignore                          |    8 +
+|  Players/.idea/Players.iml                         |    2 +
+|  Players/.idea/misc.xml                            |    4 +
+|  Players/.idea/modules.xml                         |    8 +
+|  Players/.idea/vcs.xml                             |    6 +
+|  Players/Archer.cpp                                |   13 -
+|  Players/Archer.h                                  |   16 -
+|  Players/Character.cpp                             |    6 -
+|  Players/Character.h                               |   24 +-
+|  Players/Job.cpp                                   |    3 -
+|  Players/Job.h                                     |   44 +
+|  Players/Magician.cpp                              |   12 -
+|  Players/Magician.h                                |   15 -
+|  Players/Player.cpp                                |    5 +-
+|  Players/Responsible.cpp                           |   15 -
+|  Players/Responsible.h                             |   15 -
+|  Players/RiskTaking.cpp                            |   10 -
+|  Players/RiskTaking.h                              |   16 -
+|  Players/Warrior.cpp                               |   15 -
+|  Players/Warrior.h                                 |   16 -
+|  .../.cmake/api/v1/query/cache-v2                  |    0
+|  .../.cmake/api/v1/query/cmakeFiles-v1             |    0
+|  .../.cmake/api/v1/query/codemodel-v2              |    0
+|  .../.cmake/api/v1/query/toolchains-v1             |    0
+|  Players/cmake-build-debug/CMakeCache.txt          |  368 +++++
+|  .../CMakeFiles/3.27.8/CMakeCCompiler.cmake        |   74 ++
+|  .../3.27.8/CMakeDetermineCompilerABI_C.bin        |  Bin 0 -> 43069 bytes
+|  .../CMakeFiles/3.27.8/CMakeRCCompiler.cmake       |    6 +
+|  .../CMakeFiles/3.27.8/CMakeSystem.cmake           |   15 +
+|  .../3.27.8/CompilerIdC/CMakeCCompilerId.c         |  866 ++++++++++++
+|  .../CMakeFiles/3.27.8/CompilerIdC/a.exe           |  Bin 0 -> 43144 bytes
+|  .../CMakeFiles/CMakeConfigureLog.yaml             |  205 +++
+|  .../CMakeFiles/TargetDirectories.txt              |    3 +
+|  .../CMakeFiles/clion-Debug-log.txt                |   11 +
+|  .../CMakeFiles/clion-environment.txt              |    4 +
+|  .../CMakeFiles/cmake.check_cache                  |    1 +
+|  Players/cmake-build-debug/cmake_install.cmake     |   49 +
+|  cmake-build-debug/.cmake/api/v1/query/cache-v2    |    0
+|  .../.cmake/api/v1/query/cmakeFiles-v1             |    0
+|  .../.cmake/api/v1/query/codemodel-v2              |    0
+|  .../.cmake/api/v1/query/toolchains-v1             |    0
+|  .../v1/reply/cache-v2-6d796691390346aee53b.json   | 1327 +++++++++++++++++++
+|  .../reply/cmakeFiles-v1-0c3ddc38b3533310f084.json |  165 +++
+|  .../reply/codemodel-v2-19b82e0720c5c500f1ec.json  |   60 +
+|  .../directory-.-Debug-d0094a50bb2071803777.json   |   14 +
+|  .../v1/reply/index-2024-08-13T10-10-56-0548.json  |  108 ++
+|  ...arget-MatamHW4-Debug-1e5370e6349ebb0790d3.json |  226 ++++
+|  .../reply/toolchains-v1-8d9aae6a27c250601b90.json |   93 ++
+|  cmake-build-debug/.ninja_deps                     |  Bin 0 -> 30388 bytes
+|  cmake-build-debug/.ninja_log                      |   23 +
+|  cmake-build-debug/CMakeCache.txt                  |  415 ++++++
+|  .../CMakeFiles/3.27.8/CMakeCCompiler.cmake        |   74 ++
+|  .../CMakeFiles/3.27.8/CMakeCXXCompiler.cmake      |   85 ++
+|  .../3.27.8/CMakeDetermineCompilerABI_C.bin        |  Bin 0 -> 43069 bytes
+|  .../3.27.8/CMakeDetermineCompilerABI_CXX.bin      |  Bin 0 -> 43088 bytes
+|  .../CMakeFiles/3.27.8/CMakeRCCompiler.cmake       |    6 +
+|  .../CMakeFiles/3.27.8/CMakeSystem.cmake           |   15 +
+|  .../3.27.8/CompilerIdC/CMakeCCompilerId.c         |  866 ++++++++++++
+|  .../CMakeFiles/3.27.8/CompilerIdC/a.exe           |  Bin 0 -> 43144 bytes
+|  .../3.27.8/CompilerIdCXX/CMakeCXXCompilerId.cpp   |  855 ++++++++++++
+|  .../CMakeFiles/3.27.8/CompilerIdCXX/a.exe         |  Bin 0 -> 43172 bytes
+|  .../CMakeFiles/CMakeConfigureLog.yaml             |  417 ++++++
+|  .../CMakeFiles/MatamHW4.dir/Events/Balrog.cpp.obj |  Bin 0 -> 87203 bytes
+|  .../MatamHW4.dir/Events/Encounter.cpp.obj         |  Bin 0 -> 60592 bytes
+|  .../CMakeFiles/MatamHW4.dir/Events/Event.cpp.obj  |  Bin 0 -> 64670 bytes
+|  .../CMakeFiles/MatamHW4.dir/Events/Pack.cpp.obj   |  Bin 0 -> 131765 bytes
+|  .../MatamHW4.dir/Events/PotionsMerchant.cpp.obj   |  Bin 0 -> 76117 bytes
+|  .../CMakeFiles/MatamHW4.dir/Events/Slime.cpp.obj  |  Bin 0 -> 77556 bytes
+|  .../CMakeFiles/MatamHW4.dir/Events/Snail.cpp.obj  |  Bin 0 -> 77556 bytes
+|  .../MatamHW4.dir/Events/SolarEclips.cpp.obj       |  Bin 0 -> 75249 bytes
+|  .../MatamHW4.dir/Events/SpecialEvent.cpp.obj      |  Bin 0 -> 44149 bytes
+|  .../CMakeFiles/MatamHW4.dir/MatamStory.cpp.obj    |  Bin 0 -> 3000934 bytes
+|  .../MatamHW4.dir/Players/Archer.cpp.obj           |  Bin 0 -> 55128 bytes
+|  .../MatamHW4.dir/Players/Character.cpp.obj        |  Bin 0 -> 13224 bytes
+|  .../CMakeFiles/MatamHW4.dir/Players/Job.cpp.obj   |  Bin 0 -> 745 bytes
+|  .../MatamHW4.dir/Players/Magician.cpp.obj         |  Bin 0 -> 55324 bytes
+|  .../MatamHW4.dir/Players/Player.cpp.obj           |  Bin 0 -> 137745 bytes
+|  .../MatamHW4.dir/Players/Responsible.cpp.obj      |  Bin 0 -> 55097 bytes
+|  .../MatamHW4.dir/Players/RiskTaking.cpp.obj       |  Bin 0 -> 55060 bytes
+|  .../MatamHW4.dir/Players/Warrior.cpp.obj          |  Bin 0 -> 55174 bytes
+|  .../CMakeFiles/MatamHW4.dir/Utilities.cpp.obj     |  Bin 0 -> 111060 bytes
+|  .../CMakeFiles/MatamHW4.dir/main.cpp.obj          |  Bin 0 -> 74216 bytes
+|  .../CMakeFiles/TargetDirectories.txt              |    3 +
+|  cmake-build-debug/CMakeFiles/clion-Debug-log.txt  |    4 +
+|  .../CMakeFiles/clion-environment.txt              |    4 +
+|  cmake-build-debug/CMakeFiles/cmake.check_cache    |    1 +
+|  cmake-build-debug/CMakeFiles/rules.ninja          |   64 +
+|  cmake-build-debug/MatamHW4.exe                    |  Bin 0 -> 2382759 bytes
+|  cmake-build-debug/Testing/Temporary/LastTest.log  |    3 +
+|  cmake-build-debug/build.ninja                     |  175 +++
+|  cmake-build-debug/cmake_install.cmake             |   49 +
+|  test1.out                                         |   97 ++
+|  test2.out                                         |    1 +
+|  118 files changed, 7305 insertions(+), 675 deletions(-)
+| 
+* commit e8e53cd1291e34933c569536c5c4e9887401bdd0
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Mon Aug 12 19:40:01 2024 +0300
+| 
+|     Create test1.out
+| 
+|  test1.out | 0
+|  1 file changed, 0 insertions(+), 0 deletions(-)
+| 
+* commit 9b41ab306b3e5a206b27a8ce795ce04f13e9b353
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Mon Aug 12 19:37:14 2024 +0300
+| 
+|     Update MatamStory.cpp
+| 
+|  MatamStory.cpp | 6 ++++--
+|  1 file changed, 4 insertions(+), 2 deletions(-)
+| 
+* commit f1b38ff41b4c23b4475003ae4102e394980305ad
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Mon Aug 12 19:23:07 2024 +0300
+| 
+|     Update MatamStory.cpp
+| 
+|  MatamStory.cpp | 115 +++++++++++++++++++++++++++++++++++--------------------
+|  1 file changed, 74 insertions(+), 41 deletions(-)
+| 
+* commit eedbccad67cde0ac156af6c8c51133b74cc61e66
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Mon Aug 12 16:14:37 2024 +0300
+| 
+|     Update MatamStory.cpp
+| 
+|  MatamStory.cpp | 51 ++++++++++++++++++++++++++++-----------------------
+|  1 file changed, 28 insertions(+), 23 deletions(-)
+| 
+* commit d155f418cf01901982cc4f8b1be078614d05d11a
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Mon Aug 12 15:35:25 2024 +0300
+| 
+|     read from playerfile
+| 
+|  MatamStory.cpp | 73 +++++++++++++++++++++++++++++++++++++++++++++-----------
+|  1 file changed, 59 insertions(+), 14 deletions(-)
+| 
+* commit 46977b3c149e62970df8f6006ffeafd1de5a4ff3
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Mon Aug 12 15:01:32 2024 +0300
+| 
+|     asas
+| 
+|  Events/.idea/Events.iml    |   8 ++
+|  Events/.idea/modules.xml   |   8 ++
+|  Events/.idea/vcs.xml       |   6 ++
+|  Events/.idea/workspace.xml |  62 ++++++++++++++++
+|  Events/PotionsMerchant.h   |   1 +
+|  Events/SolarEclips.h       |   1 +
+|  MatamStory.cpp             | 170 ++++++++++++++++++++++++++++++++++++++-----
+|  MatamStory.h               |  19 +++++
+|  Players/Magician.h         |   3 +-
+|  Players/Player.cpp         |  10 +--
+|  Players/Responsible.h      |   1 +
+|  Players/RiskTaking.h       |   1 +
+|  12 files changed, 266 insertions(+), 24 deletions(-)
+| 
+* commit 2c3fcbf32dacffae80b97615d3e42b8287fc83f4
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Sun Aug 11 12:25:59 2024 +0300
+| 
+|     begin matamstory
+| 
+|  Events/Balrog.cpp          |  7 +++-
+|  Events/Balrog.h            |  2 +-
+|  Events/Encounter.h         |  2 +-
+|  Events/Event.h             |  2 +-
+|  Events/Pack.cpp            |  4 +-
+|  Events/Pack.h              |  2 +-
+|  Events/PotionsMerchant.cpp | 11 ++++--
+|  Events/PotionsMerchant.h   |  2 +-
+|  Events/Slime.cpp           |  4 +-
+|  Events/Slime.h             |  2 +-
+|  Events/Snail.cpp           |  4 +-
+|  Events/Snail.h             |  2 +-
+|  Events/SolarEclips.cpp     |  6 ++-
+|  Events/SolarEclips.h       |  2 +-
+|  Events/SpecialEvent.h      |  2 +-
+|  MatamStory.cpp             | 93 ++++++++++++++++++++++++++++++++++++++++++++
+|  MatamStory.h               | 15 ++++++-
+|  Players/Player.cpp         | 13 ++++++-
+|  Players/Player.h           |  3 ++
+|  19 files changed, 156 insertions(+), 22 deletions(-)
+| 
+* commit e5be7df4e9f53fe620f6bbcdb78104d5c1441b3e
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Thu Aug 8 20:57:16 2024 +0300
+| 
+|     complete players and events
+| 
+|  Events/Balrog.cpp          | 46 ++++++++++++++++++++++++++
+|  Events/Balrog.h            | 23 +++++++++++++
+|  Events/Encounter.cpp       | 10 ++++++
+|  Events/Encounter.h         | 27 +++++++++++++++
+|  Events/Event.cpp           | 11 +++++++
+|  Events/Event.h             | 11 +++++--
+|  Events/Pack.cpp            | 59 +++++++++++++++++++++++++++++++++
+|  Events/Pack.h              | 23 +++++++++++++
+|  Events/PotionsMerchant.cpp | 38 +++++++++++++++++++++
+|  Events/PotionsMerchant.h   | 16 +++++++++
+|  Events/Slime.cpp           | 46 ++++++++++++++++++++++++++
+|  Events/Slime.h             | 23 +++++++++++++
+|  Events/Snail.cpp           | 43 ++++++++++++++++++++++++
+|  Events/Snail.h             | 24 ++++++++++++++
+|  Events/SolarEclips.cpp     | 24 ++++++++++++++
+|  Events/SolarEclips.h       | 17 ++++++++++
+|  Events/SpecialEvent.cpp    |  6 ++++
+|  Events/SpecialEvent.h      | 17 ++++++++++
+|  Players/Player.cpp         | 78 ++++++++++++++++++++++++++++++++++++++++++--
+|  Players/Player.h           | 10 ++++++
+|  20 files changed, 548 insertions(+), 4 deletions(-)
+| 
+* commit 3eeb244b9fd16ab53e93c9f4ac9eff7b9dda8e57
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Sun Aug 4 19:13:40 2024 +0300
+| 
+|     aa
+| 
+|  Players/Archer.cpp    | 13 +++++++++++++
+|  Players/Archer.h      | 16 ++++++++++++++++
+|  Players/Character.cpp |  6 ++++++
+|  Players/Character.h   | 16 ++++++++++++++++
+|  4 files changed, 51 insertions(+)
+| 
+* commit a2639ede18e3ed57a0bc94df7c757136b3c9c758
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Sun Aug 4 17:42:36 2024 +0300
+| 
+|     add jobs+characters
+| 
+|  Players/Job.cpp         |  3 +++
+|  Players/Job.h           | 17 +++++++++++++++++
+|  Players/Magician.cpp    | 12 ++++++++++++
+|  Players/Magician.h      | 14 ++++++++++++++
+|  Players/Player.cpp      |  9 +++++++++
+|  Players/Player.h        | 16 +++++++++++++++-
+|  Players/Responsible.cpp | 15 +++++++++++++++
+|  Players/Responsible.h   | 14 ++++++++++++++
+|  Players/RiskTaking.cpp  | 10 ++++++++++
+|  Players/RiskTaking.h    | 15 +++++++++++++++
+|  Players/Warrior.cpp     | 15 +++++++++++++++
+|  Players/Warrior.h       | 16 ++++++++++++++++
+|  12 files changed, 155 insertions(+), 1 deletion(-)
+| 
+* commit d2b9af7adbd3668e8201d7e619d12a61579594b9
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Sun Aug 4 16:09:58 2024 +0300
+| 
+|     Create Player.cpp
+| 
+|  Players/Player.cpp | 3 +++
+|  1 file changed, 3 insertions(+)
+| 
+* commit ecc9258c6f2aa2c9c091a7738587e206586a1c14
+| Author: Adi Harif <adi.harif@campus.technion.ac.il>
+| Date:   Sun Aug 4 08:16:59 2024 +0300
+| 
+|     [format] Changes tests eol format to LF instead of CRLF
+| 
+|  tests/test1.events  | 8 ++++----
+|  tests/test1.players | 4 ++--
+|  tests/test2.events  | 6 +++---
+|  tests/test2.players | 4 ++--
+|  tests/test3.events  | 8 ++++----
+|  tests/test3.players | 2 +-
+|  6 files changed, 16 insertions(+), 16 deletions(-)
+| 
+* commit 6d0b58bcecef6fc2291c09f654a978cc382c3e31
+| Author: AdiHarif <adi.harif@campus.technion.ac.il>
+| Date:   Mon Jul 29 21:47:45 2024 +0300
+| 
+|     Adds supplied files
+| 
+|  Events/Event.h       |  14 +++++
+|  MatamStory.cpp       |  74 +++++++++++++++++++++++++
+|  MatamStory.h         |  55 +++++++++++++++++++
+|  Players/Player.h     |  51 +++++++++++++++++
+|  Utilities.cpp        | 117 +++++++++++++++++++++++++++++++++++++++
+|  Utilities.h          | 146 +++++++++++++++++++++++++++++++++++++++++++++++++
+|  main.cpp             |  40 ++++++++++++++
+|  tests/test1.events   |   5 ++
+|  tests/test1.expected |  96 ++++++++++++++++++++++++++++++++
+|  tests/test1.players  |   3 +
+|  tests/test2.events   |   4 ++
+|  tests/test2.expected |   1 +
+|  tests/test2.players  |   3 +
+|  tests/test3.events   |   5 ++
+|  tests/test3.expected |   1 +
+|  tests/test3.players  |   2 +
+|  16 files changed, 617 insertions(+)
+| 
+* commit beadb33ed4c7dd2da9d4078b9de6253232c67a46
+  Author: AdiHarif <adi.harif@campus.technion.ac.il>
+  Date:   Mon Jul 29 21:46:59 2024 +0300
+  
+      Initial Commit - Adds README.md file
+  
+   README.md | 7 +++++++
+   1 file changed, 7 insertions(+)
