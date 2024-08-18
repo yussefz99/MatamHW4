@@ -1,3 +1,21 @@
+* commit 801580596068a735e198fd22cb2610876c546f0e
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Sun Aug 18 12:26:58 2024 +0300
+| 
+|     Update dry.pdf
+| 
+|  dry.pdf | Bin 242944 -> 245215 bytes
+|  1 file changed, 0 insertions(+), 0 deletions(-)
+| 
+* commit 561631c096cfa747a159f9c67dfd91b468f06c39
+| Author: yussefz99 <yussefz@campus.technion.ac.il>
+| Date:   Sat Aug 17 23:38:24 2024 +0300
+| 
+|     Create log.txt
+| 
+|  log.txt | 380 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+|  1 file changed, 380 insertions(+)
+| 
 * commit a9e4c171f793a1f2a6b25a7f1595dddcc8f3b229
 | Author: yussefz99 <yussefz@campus.technion.ac.il>
 | Date:   Sat Aug 17 23:32:30 2024 +0300
